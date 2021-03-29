@@ -591,11 +591,12 @@ label_names = list(fig = 'Figure ', tab = 'Table ', eq = 'Equation ')
 # prefixes for theorem environments
 theorem_abbr = c(
   theorem = 'thm', lemma = 'lem', corollary = 'cor', proposition = 'prp', conjecture = 'cnj',
-  definition = 'def', example = 'exm', exercise = 'exr'
+  definition = 'def', example = 'exm', exercise = 'exr', hypothesis = 'hyp'
 )
 # numbered math environments
 label_names_math = setNames(list(
-  'Theorem ', 'Lemma ', 'Corollary ', 'Proposition ', 'Conjecture ', 'Definition ', 'Example ', 'Exercise '
+  'Theorem ', 'Lemma ', 'Corollary ', 'Proposition ', 'Conjecture ', 'Definition ', 'Example ', 'Exercise ',
+  'Hypothesis '
 ), theorem_abbr)
 # unnumbered math environments
 label_names_math2 = list(proof = 'Proof. ', remark = 'Remark. ', solution = 'Solution. ')
@@ -664,7 +665,7 @@ parse_fig_labels = function(content, global = FALSE) {
       k = max(figs[figs <= i])
       content[k] = paste(c(content[k], sprintf('<span id="%s"></span>', lab)), collapse = '')
     }, tab = {
-      if (length(grep('^<caption', content[i - 0:1])) == 0) next
+      if (length(grep('^\\s*<caption', content[i - 0:1])) == 0) next
       labs[[i]] = sprintf(
         '<span id="%s">%s</span>', lab, paste0(label_prefix(type), num, ': ')
       )
@@ -906,7 +907,7 @@ restore_appendix_html = function(x, remove = TRUE) {
 
 # parse reference items so we can move them back to the chapter where they were used
 parse_references = function(x) {
-  i = grep('^<div id="refs" class="references[^"]*">$', x)
+  i = grep('^<div id="refs" class="references[^"]*"[^>]*>$', x)
   if (length(i) != 1) return(list(refs = character(), html = x))
   r = '^(<div) id="(ref-[^"]+)"([^>]*>)$'
   k = grep(r, x)
