@@ -1,5 +1,7 @@
 # CHANGES IN bookdown VERSION 0.23
 
+- Figure reference links now point correctly to the top of figures (thanks, @GuillaumeBiessy, #1155).
+
 - `epub_version` argument in `epub_book()` can now be set to `epub2` to creat EPUB book of version 2. This follows an old change for default behavior in Pandoc 2.0 where the alias `epub` defaults to `epub3` and no more `epub2` (thanks, jtbayly, #1150).
 
 - [Theorem and Proof environment](https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html#theorems) can now be used with `beamer_presentation2()` using fenced Div syntax like this
@@ -10,8 +12,11 @@
   ````
   
   However, as _beamer_ defines its own LaTeX throem environments, **bookdown** won't add any definition in preamble as it is doing with `pdf_book()`. This means user will have to define the ones supported by **bookdown** and not yet defined by _beamer_. Special environment from _beamer_ (like `fact`) needs to be used with usual [Custom Blocks syntax](https://bookdown.org/yihui/rmarkdown-cookbook/custom-blocks.html). See related issues for examples in their discussions thread (thanks, @XiangyunHuang, #1143, #1145).
+
   This change comes with several small improvements in `custom-enviromnent.lua` for `latex` and `beamer` format, including a new option `bookdown.theorem.preamble` to opt-out **bookdown** addition of theorems and proofs definitions in LaTeX preamble. Set it to `FALSE` if you have conflict with some specific format for example (like #1001).
-  
+
+- When the `site` field is quoted in `index.Rmd`'s YAML data (i.e., `site: "bookdown::bookdown_site"`), **bookdown** fails to identify the root directory of the book (thanks, @dchiu911, #1160).
+
 # CHANGES IN bookdown VERSION 0.22
 
 ## NEW FEATURES
